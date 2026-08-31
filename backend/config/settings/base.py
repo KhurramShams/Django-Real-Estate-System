@@ -31,18 +31,27 @@ env = environ.Env(
 SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = env.list(
-    "ALLOWED_HOSTS",
-    default=[
-        "localhost",
-        "127.0.0.1",
-        "[::1]",
-        ".vercel.app",
-        ".now.sh",
-        ".onrender.com",
-        "real-estate-management-system-olur.vercel.app",
-    ],
-)
+raw_hosts = env.list("ALLOWED_HOSTS", default=["*"])
+ALLOWED_HOSTS = list(raw_hosts)
+
+# Always guarantee cloud deployment and local hostnames are included
+for host_entry in [
+    ".vercel.app",
+    ".now.sh",
+    ".onrender.com",
+    "localhost",
+    "127.0.0.1",
+    "[::1]",
+    "real-estate-management-system-olur.vercel.app",
+]:
+    if host_entry not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(host_entry)
+
+# Auto-detect dynamic Vercel & Render environment hostnames
+for env_var in ["VERCEL_URL", "RENDER_EXTERNAL_HOSTNAME"]:
+    detected = os.environ.get(env_var)
+    if detected and detected not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(detected)
 
 # Application definition
 DJANGO_APPS = [
