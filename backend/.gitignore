@@ -1,0 +1,26 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local environment & SQLite database (DO NOT COMMIT)
+db.sqlite3
+db.sqlite3-journal
+.env
+.env.local
+.env.*.local
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# Static files collected
+staticfiles/
+media/
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+*.log

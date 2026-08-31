@@ -1,0 +1,24 @@
+[Unit]
+Description=My House Real Estate Management System Gunicorn Daemon
+After=network.target
+
+[Service]
+# User and Group under which Django will run (change to your VPS user, e.g. ubuntu, root, www-data)
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/RealState/backend
+Environment="PATH=/home/ubuntu/RealState/backend/venv/bin"
+EnvironmentFile=/home/ubuntu/RealState/backend/.env
+
+# Gunicorn start command
+ExecStart=/home/ubuntu/RealState/backend/venv/bin/gunicorn \
+          --workers 3 \
+          --bind 127.0.0.1:8000 \
+          --timeout 120 \
+          config.wsgi:application
+
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

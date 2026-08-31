@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+:root {
+  --bg-app: #060B18;
+  --bg-surface-1: #0A1226;
+  --bg-surface-2: #101B38;
+  --bg-surface-3: #18274E;
+  
+  --border-subtle: #1E2E59;
+  --border-glow: #D4AF37;
+
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+
+  --gold-primary: #D4AF37;
+  --gold-hover: #E5C158;
+  --gold-tint: rgba(212, 175, 55, 0.15);
+}
+
+body {
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #070D1E;
+}
+::-webkit-scrollbar-thumb {
+  background: #1E2E59;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #D4AF37;
+}
+
+/* Shimmer Animation for Skeletons */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s infinite linear;
+}
+
+/* Glassmorphism Surface Utility */
+.glass-panel {
+  background: rgba(11, 19, 43, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(34, 51, 99, 0.6);
+}
+
+.glass-card {
+  background: rgba(14, 23, 48, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(34, 51, 99, 0.5);
+  transition: all 0.2s ease-in-out;
+}
+
+.glass-card:hover {
+  border-color: rgba(212, 175, 55, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px rgba(212, 175, 55, 0.1);
+}
