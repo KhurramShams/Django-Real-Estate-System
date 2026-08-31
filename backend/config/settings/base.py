@@ -31,7 +31,18 @@ env = environ.Env(
 SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1", "[::1]"])
+ALLOWED_HOSTS = env.list(
+    "ALLOWED_HOSTS",
+    default=[
+        "localhost",
+        "127.0.0.1",
+        "[::1]",
+        ".vercel.app",
+        ".now.sh",
+        ".onrender.com",
+        "real-estate-management-system-olur.vercel.app",
+    ],
+)
 
 # Application definition
 DJANGO_APPS = [
@@ -222,7 +233,7 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https://.*\.onrender\.com$",
 ]
 
-# CSRF Trusted Origins (Essential for Django behind VPS Nginx Reverse Proxy)
+# CSRF Trusted Origins (Essential for Django behind VPS / Vercel)
 CSRF_TRUSTED_ORIGINS = env.list(
     "CSRF_TRUSTED_ORIGINS",
     default=[
@@ -230,6 +241,9 @@ CSRF_TRUSTED_ORIGINS = env.list(
         "http://127.0.0.1:3000",
         "http://localhost:8000",
         "http://127.0.0.1:8000",
+        "https://*.vercel.app",
+        "https://*.onrender.com",
+        "https://real-estate-management-system-olur.vercel.app",
     ],
 )
 
