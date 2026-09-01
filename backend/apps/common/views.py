@@ -47,3 +47,32 @@ class HealthCheckView(APIView):
             },
             status=status_code,
         )
+
+
+class APIRootView(APIView):
+    """
+    Root API landing view returning system metadata and available endpoints.
+    Exposed at / and /api/v1/
+    """
+
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        return Response(
+            {
+                "system": "MY HOUSE - Real Estate Management System API",
+                "status": "online",
+                "version": "1.0.0",
+                "endpoints": {
+                    "health": request.build_absolute_uri("/api/v1/health/"),
+                    "auth": request.build_absolute_uri("/api/v1/auth/"),
+                    "properties": request.build_absolute_uri("/api/v1/properties/"),
+                    "clients": request.build_absolute_uri("/api/v1/clients/"),
+                    "deals": request.build_absolute_uri("/api/v1/deals/"),
+                    "payments": request.build_absolute_uri("/api/v1/payments/"),
+                    "dashboard_summary": request.build_absolute_uri("/api/v1/dashboard/summary/"),
+                    "admin": request.build_absolute_uri("/admin/"),
+                },
+            },
+            status=status.HTTP_200_OK,
+        )

@@ -1,11 +1,11 @@
-"""
-Root URL Configuration for Real Estate Management System.
-All API endpoints are versioned under /api/v1/
-"""
 from django.contrib import admin
 from django.urls import path, include
+from apps.common.views import APIRootView
 
 urlpatterns = [
+    # API Root Landing View
+    path("", APIRootView.as_view(), name="api_root"),
+
     # Django Admin Site
     path("admin/", admin.site.urls),
 

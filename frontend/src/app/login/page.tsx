@@ -138,7 +138,7 @@ export default function LoginPage() {
               <p className="text-[11px] uppercase tracking-wider font-semibold text-slate-400 text-center mb-2.5">
                 Quick Demo Login Presets
               </p>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-3 gap-2">
                 <button
                   type="button"
                   onClick={() =>
@@ -150,6 +150,19 @@ export default function LoginPage() {
                     <Shield className="w-3 h-3" /> Admin
                   </span>
                   <span className="text-[10px] text-slate-500 truncate">Full Agency</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    handleQuickFill("agent.pay.a@luxuryrealty.com", "AgentPass2026!")
+                  }
+                  className="p-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-left transition-colors flex flex-col gap-0.5"
+                >
+                  <span className="flex items-center gap-1 text-[11px] font-bold text-amber-300">
+                    <UserCheck className="w-3 h-3" /> Agent
+                  </span>
+                  <span className="text-[10px] text-slate-500 truncate">Deals & Clients</span>
                 </button>
 
                 <button

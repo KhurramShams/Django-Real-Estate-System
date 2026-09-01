@@ -42,6 +42,7 @@ for host_entry in [
     "localhost",
     "127.0.0.1",
     "[::1]",
+    "testserver",
     "real-estate-management-system-olur.vercel.app",
 ]:
     if host_entry not in ALLOWED_HOSTS:
