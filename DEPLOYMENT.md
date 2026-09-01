@@ -1,6 +1,6 @@
-# MY HOUSE — Complete VPS & Vercel Production Deployment Guide
+# Real Estate Management System — Complete VPS & Vercel Production Deployment Guide
 
-This guide details how to deploy the **My House Real Estate Management System** with:
+This guide details how to deploy the **Real Estate Management System** with:
 - **Backend API on Linux VPS** (Ubuntu 22.04 / 24.04 with Gunicorn + Systemd + Nginx + WhiteNoise + Certbot SSL)
 - **Database**: [Aiven Cloud](https://aiven.io) (Managed PostgreSQL 18)
 - **Media Storage**: [Supabase Storage](https://supabase.com) (S3 Object Storage)
@@ -43,12 +43,14 @@ pip install -r requirements.txt
 ---
 
 ### Step 3: Configure Environment Variables on VPS
-Create `.env` inside `~/RealState/backend/.env`:
+Create `.env` inside `~/RealState/backend/.env`. **This file must never be committed to git** — confirm `.env` is listed in `.gitignore` before proceeding.
+
 ```bash
 nano ~/RealState/backend/.env
 ```
 
-Paste your production environment variables (adjust domain/IP as needed):
+Paste your production environment variables, replacing every placeholder below with your own real (and, if you're setting this up fresh, newly rotated) values:
+
 ```env
 # Django Settings Module
 DJANGO_SETTINGS_MODULE=config.settings.production
@@ -59,11 +61,11 @@ DEBUG=False
 ALLOWED_HOSTS=localhost,127.0.0.1,your_vps_ip,api.yourdomain.com
 
 # Database Connection (Aiven PostgreSQL)
-DATABASE_URL=postgres://avnadmin:AVNS_WEDUV55KWveKclRo4ir@pg-21fe518f-shamsshaikh-2127.a.aivencloud.com:14675/defaultdb?sslmode=require
+DATABASE_URL=postgres://your-db-user:your-db-password@your-aiven-host.aivencloud.com:your-port/defaultdb?sslmode=require
 
 # Supabase Storage Integration
-SUPABASE_URL=https://cdyfjnexgqufivaixpqi.storage.supabase.co/storage/v1/s3
-SUPABASE_KEY=56293195d2fdd3d63b2c1ea97a084977
+SUPABASE_URL=https://your-project-ref.storage.supabase.co/storage/v1/s3
+SUPABASE_KEY=your-supabase-api-key
 SUPABASE_BUCKET_NAME=real-estate-media
 
 # CORS Settings (Allow your deployed Vercel frontend URL)
@@ -79,6 +81,8 @@ JWT_REFRESH_TOKEN_LIFETIME_DAYS=7
 ```
 
 Save with `CTRL + O`, `ENTER`, and exit with `CTRL + X`.
+
+> ⚠️ **Never paste real secret values into any file that gets committed to git** — including README.md, ARCHITECTURE.md, or this file. Only `.env.example` (with placeholder values) belongs in version control.
 
 ---
 
@@ -100,18 +104,18 @@ python manage.py createsuperuser
 ---
 
 ### Step 5: Configure Systemd Service for Gunicorn
-Copy the prepared `myhouse.service` file to systemd:
+Copy the prepared service file to systemd:
 ```bash
-# If your VPS username is different from 'ubuntu', edit User= and paths in myhouse.service first
-sudo cp ~/RealState/backend/myhouse.service /etc/systemd/system/myhouse.service
+# If your VPS username is different from 'ubuntu', edit User= and paths in the service file first
+sudo cp ~/RealState/backend/realestate.service /etc/systemd/system/realestate.service
 
 # Reload systemd, enable service to start on boot, and start it
 sudo systemctl daemon-reload
-sudo systemctl enable myhouse
-sudo systemctl start myhouse
+sudo systemctl enable realestate
+sudo systemctl start realestate
 
 # Check status (should show active/running)
-sudo systemctl status myhouse
+sudo systemctl status realestate
 ```
 
 ---
@@ -119,16 +123,16 @@ sudo systemctl status myhouse
 ### Step 6: Configure Nginx as Reverse Proxy
 Copy the prepared Nginx config to `/etc/nginx/sites-available/`:
 ```bash
-sudo cp ~/RealState/backend/myhouse-nginx.conf /etc/nginx/sites-available/myhouse
+sudo cp ~/RealState/backend/realestate-nginx.conf /etc/nginx/sites-available/realestate
 
 # Edit the server_name with your actual domain or VPS IP
-sudo nano /etc/nginx/sites-available/myhouse
+sudo nano /etc/nginx/sites-available/realestate
 ```
 
 Enable the site and restart Nginx:
 ```bash
 # Enable the site
-sudo ln -sf /etc/nginx/sites-available/myhouse /etc/nginx/sites-enabled/
+sudo ln -sf /etc/nginx/sites-available/realestate /etc/nginx/sites-enabled/
 
 # Remove default site if present
 sudo rm -f /etc/nginx/sites-enabled/default
@@ -147,7 +151,7 @@ If you have a domain pointing to your VPS IP (e.g. `api.yourdomain.com`):
 ```bash
 sudo certbot --nginx -d api.yourdomain.com
 ```
-Certbot will automatically install SSL and configure HTTPS redirection in Nginx!
+Certbot will automatically install SSL and configure HTTPS redirection in Nginx.
 
 ---
 
@@ -193,3 +197,11 @@ This script automatically pulls latest changes, runs migrations on Aiven Postgre
 - [ ] Vercel frontend loads at `https://your-app.vercel.app/login`.
 - [ ] Log in with your admin credentials.
 - [ ] Verify Dashboard, Properties, Clients, Deals, and Payments load live data from Aiven Cloud PostgreSQL.
+
+---
+
+## Security Checklist Before Making This Repo Public
+
+- [ ] `.env` is listed in `.gitignore` and was never committed
+- [ ] This file (`DEPLOYMENT.md`) contains only placeholder values, never real credentials
+- [ ] If real credentials were ever committed at any point in git history, they have been rotated (Aiven DB password, Supabase API key, Django `SECRET_KEY`) and the old commits containing them have been scrubbed from history (e.g. with `git filter-repo` or BFG Repo-Cleaner) before the repo is made public
