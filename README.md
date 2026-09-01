@@ -9,8 +9,8 @@ A single-tenant real estate management platform built for property agencies to m
 [![Built with Django](https://img.shields.io/badge/backend-Django%205.1-092E20?logo=django)](https://www.djangoproject.com/)
 [![Built with Next.js](https://img.shields.io/badge/frontend-Next.js%2015-black?logo=next.js)](https://nextjs.org/)
 
-**🔗 Live Demo:** [your-frontend-url.vercel.app](https://your-frontend-url.vercel.app)
-**🔗 Backend API:** [your-backend-url.example.com](https://your-backend-url.example.com)
+**🔗 Live Demo:** [frontend-url](https://real-estate-management-system-ruby.vercel.app/login)
+**🔗 Backend API:** [backend-url](https://real-estate-management-system-olur.vercel.app/)
 
 ---
 
